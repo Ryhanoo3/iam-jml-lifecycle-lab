@@ -1,1 +1,13 @@
-[]
+[
+    {
+        "employee_id": "E001",
+        "name": "Alice Smith",
+        "role": "HR Administrator",
+        "identity_status": "active",
+        "accounts": [
+            "Microsoft 365",
+            "HR System"
+        ],
+        "entitlements": []
+    }
+]
