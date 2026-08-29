@@ -1,15 +1,25 @@
 {
-    "Finance Analyst": [
-        "Microsoft 365",
-        "Finance System",
-        "Finance Reports - Read"
-    ],
-    "Software Developer": [
-        "Microsoft 365",
-        "GitHub"
-    ],
-    "HR Administrator": [
-        "Microsoft 365",
-        "HR System"
-    ]
+    "Finance Analyst": {
+        "accounts": [
+            "Microsoft 365",
+            "Finance System"
+        ],
+        "entitlements": [
+            "Finance Reports - Read"
+        ]
+    },
+    "Software Developer": {
+        "accounts": [
+            "Microsoft 365",
+            "GitHub"
+        ],
+        "entitlements": []
+    },
+    "HR Administrator": {
+        "accounts": [
+            "Microsoft 365",
+            "HR System"
+        ],
+        "entitlements": []
+    }
 }

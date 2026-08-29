@@ -36,20 +36,10 @@ def run_joiner() -> None:
     if start_date > date.today():
         raise ValueError("Alice's start date is in the future.")
 
-    # Use Alice's role to find the applications and entitlement she should receive.
-    access = roles[employee["role"]]
+    # Use Alice's role to find her accounts and entitlements in the role file.
+    role_access = roles[employee["role"]]
 
-    # Create a small, readable identity record for the demo.
-    identity_entry = {
-        "employee_id": employee["employee_id"],
-        "name": f"{employee['first_name']} {employee['last_name']}",
-        "role": employee["role"],
-        "identity_status": "active",
-        "accounts": ["Microsoft 365", "Finance System"],
-        "entitlements": ["Finance Reports - Read"],
-    }
-
-    # Ensure the state file exists and contains a JSON array before saving the update.
+    # Load the current state so we can avoid creating Alice twice.
     IDENTITY_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     if IDENTITY_STATE_FILE.exists():
         with IDENTITY_STATE_FILE.open(encoding="utf-8") as file:
@@ -57,6 +47,21 @@ def run_joiner() -> None:
     else:
         identity_state = []
 
+    if any(entry["employee_id"] == "E001" for entry in identity_state):
+        print("Alice Smith (E001) is already provisioned. No duplicate was created.")
+        return
+
+    # Create a small, readable identity record for the demo.
+    identity_entry = {
+        "employee_id": employee["employee_id"],
+        "name": f"{employee['first_name']} {employee['last_name']}",
+        "role": employee["role"],
+        "identity_status": "active",
+        "accounts": role_access["accounts"],
+        "entitlements": role_access["entitlements"],
+    }
+
+    # Add the generated identity to the state and save it as JSON.
     identity_state.append(identity_entry)
     with IDENTITY_STATE_FILE.open("w", encoding="utf-8") as file:
         json.dump(identity_state, file, indent=4)
@@ -69,7 +74,7 @@ def run_joiner() -> None:
         f"{timestamp} - JOINER - Provisioned {identity_entry['name']} "
         f"({employee['employee_id']}) with role {employee['role']}; "
         f"accounts: {', '.join(identity_entry['accounts'])}; "
-        f"entitlement: {identity_entry['entitlements'][0]}\n"
+        f"entitlements: {', '.join(identity_entry['entitlements'])}\n"
     )
     with AUDIT_LOG_FILE.open("a", encoding="utf-8") as file:
         file.write(audit_entry)
@@ -77,8 +82,7 @@ def run_joiner() -> None:
     print(f"Provisioned {identity_entry['name']} ({employee['employee_id']})")
     print(f"Role: {employee['role']}")
     print(f"Accounts: {', '.join(identity_entry['accounts'])}")
-    print(f"Entitlement: {identity_entry['entitlements'][0]}")
-    print(f"Access found in role file: {', '.join(access)}")
+    print(f"Entitlements: {', '.join(identity_entry['entitlements'])}")
     print(f"Identity state written to {IDENTITY_STATE_FILE}")
     print(f"Audit entry appended to {AUDIT_LOG_FILE}")
 
