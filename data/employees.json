@@ -1,0 +1,29 @@
+[
+    {
+        "employee_id": "E001",
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "department": "Finance",
+        "role": "Finance Analyst",
+        "status": "active",
+        "start_date": "2026-08-29"
+    },
+    {
+        "employee_id": "E002",
+        "first_name": "Bob",
+        "last_name": "Jones",
+        "department": "Engineering",
+        "role": "Software Developer",
+        "status": "active",
+        "start_date": "2026-08-31"
+    },
+    {
+        "employee_id": "E003",
+        "first_name": "Charlie",
+        "last_name": "Brown",
+        "department": "HR",
+        "role": "HR Administrator",
+        "status": "active",
+        "start_date": "2026-08-31"
+    }
+]
