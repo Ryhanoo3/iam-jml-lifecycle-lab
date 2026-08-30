@@ -220,6 +220,3 @@ __marimo__/
 # Project-generated output
 logs/*
 !logs/.gitkeep
-screenshots/*
-!screenshots/.gitkeep
-
