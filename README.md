@@ -12,21 +12,8 @@ In this lab, Alice starts as a Finance Analyst, moves to HR Administrator, and t
 
 ## Architecture
 
-```text
-employees.json       roles.json
-      |                  |
-      +---- Joiner ------+
-                |
-                v
-       identity_state.json <---- Mover ---- roles.json
-                |
-                v
-             Leaver
-                |
-                +----> logs/audit.log
-```
+![image alt](https://github.com/Ryhanoo3/iam-jml-lifecycle-lab/blob/ecb142c02c99a71f1034999bb33b6667c48cde14/architecture.png)
 
-`identity_state.json` is the simulated identity store. `audit.log` is the generated record of lifecycle events.
 
 ## Technologies used
 
