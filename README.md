@@ -45,6 +45,12 @@ iam-jml-lifecycle-lab/
 │   └── identity_state.json     # Generated identity state; clean baseline is []
 ├── logs/
 │   └── audit.log               # Generated lifecycle audit trail (ignored by Git)
+├── screenshots/
+│   ├── 01-joiner.jpg           # Joiner provisioning evidence
+│   ├── 02-mover.jpg            # Mover access-change evidence
+│   ├── 03-mover-idempotency.jpg # Mover duplicate-protection evidence
+│   ├── 04-leaver.jpg           # Leaver deprovisioning evidence
+│   └── 05-audit-trail.jpg      # Complete audit-trail evidence
 ├── src/
 │   ├── joiner.py               # Provisions Alice as a Finance Analyst
 │   ├── mover.py                # Moves Alice to HR Administrator
@@ -61,13 +67,19 @@ iam-jml-lifecycle-lab/
 
 `joiner.py` reads Alice (`E001`) from `employees.json`, confirms that she is active and has started, then looks up her role in `roles.json`. It creates an active identity record with the accounts and entitlements assigned to a Finance Analyst.
 
+![Joiner provisioning output](screenshots/01-joiner.jpg)
+
 ### Mover
 
 `mover.py` reads Alice's current identity state and compares it with the access definition for `HR Administrator`. It retains shared access, removes Finance-only access, and adds HR access. This prevents privilege creep: Alice does not keep access merely because she once had it.
 
+![Mover access-change output](screenshots/02-mover.jpg)
+
 ### Leaver
 
 `leaver.py` reads Alice's current access, writes a record of what was revoked, then marks her identity inactive and removes all accounts and entitlements. Her identity record remains for audit history.
+
+![Leaver deprovisioning output](screenshots/04-leaver.jpg)
 
 ## IAM concepts demonstrated
 
@@ -147,6 +159,8 @@ Final identity status: inactive
 
 After the final command, `data/identity_state.json` keeps Alice's historical record with `identity_status` set to `inactive` and empty access lists. `logs/audit.log` contains one JOINER, one MOVER, and one LEAVER event.
 
+![Complete audit trail](screenshots/05-audit-trail.jpg)
+
 ### Idempotency checks
 
 Run any completed lifecycle script a second time to see its protection against duplicate work:
@@ -161,6 +175,8 @@ Expected result:
 Alice Smith (E001) is already inactive with no access.
 No changes made and no duplicate audit event created.
 ```
+
+![Mover idempotency output](screenshots/03-mover-idempotency.jpg)
 
 Use `python src/reset_demo.py` whenever you want to start the full lifecycle again.
 
